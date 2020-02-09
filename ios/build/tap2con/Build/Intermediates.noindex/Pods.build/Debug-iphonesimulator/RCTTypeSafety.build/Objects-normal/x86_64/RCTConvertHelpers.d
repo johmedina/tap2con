@@ -1,0 +1,29 @@
+dependencies: \
+  /Users/smd/Documents/tap2con/node_modules/react-native/Libraries/TypeSafety/RCTConvertHelpers.mm \
+  /Users/smd/Documents/tap2con/ios/Pods/Target\ Support\ Files/RCTTypeSafety/RCTTypeSafety-prefix.pch \
+  /Users/smd/Documents/tap2con/node_modules/react-native/Libraries/TypeSafety/RCTConvertHelpers.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/FBLazyVector/FBLazyVector/FBLazyVector.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/FBLazyVector/FBLazyVector/FBLazyIterator.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Folly/folly/Optional.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Folly/folly/Portability.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Folly/folly/portability/Config.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Folly/folly/CPortability.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Folly/folly/Traits.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Folly/folly/Utility.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Folly/folly/lang/Exception.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Folly/folly/CppAttributes.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTConvert.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTAnimationType.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTBorderStyle.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTDefines.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTInspectorDevServerHelper.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTPackagerConnection.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTLog.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTAssert.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTUtils.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTPointerEvents.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/React-Core/React/RCTTextDecorationLineType.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/Yoga/yoga/Yoga.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/Yoga/yoga/YGEnums.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/Yoga/yoga/YGMacros.h \
+  /Users/smd/Documents/tap2con/ios/Pods/Headers/Public/Yoga/yoga/YGValue.h
