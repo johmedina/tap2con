@@ -16,7 +16,7 @@ import SSH from 'react-native-ssh';
 config = {user: 'root',host: '192.168.1.1',password: 'admin'}
 command = 'ls'
 
-function buildUrlPayload(valueToWrite) {
+function buildTextPayload(valueToWrite) {
     return Ndef.encodeMessage([
         Ndef.textRecord(valueToWrite),
     ]);
@@ -64,7 +64,7 @@ class App extends React.Component {
 
         let ndef = await NfcManager.getNdefMessage();
         console.warn(ndef);
-        let bytes = buildUrlPayload(this.state.text);
+        let bytes = buildTextPayload(this.state.text);
         await NfcManager.writeNdefMessage(bytes);
         console.warn('successfully write ndef');
         await NfcManager.setAlertMessageIOS('I got your tag!');
@@ -79,8 +79,9 @@ class App extends React.Component {
     readData = async () => {
       try {
         await NfcManager.registerTagEvent();
-        let whatIread = NfcManager.getNdefMessage();
-        console.warn(whatIread);
+        let bytesIread = NfcManager.getNdefMessage();
+        //let whatIread = Ndef.decodeMessage([bytesIread]);
+        console.warn(bytesIread);
         this.setState({
           log: this.state.text,
           allow: 1,
