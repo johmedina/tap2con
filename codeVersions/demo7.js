@@ -1,8 +1,9 @@
-/* First NFC code for mifare ultralight */
+/* NFC code for mifare ultralight */
 
-/* NFC and router stuff version 2
+/* NFC and router
  * Working completely for an NFC ultralight
- * USE THIS CODE TO WRITE TO MIFARE ULTRALGIHT */
+ * with the desired simple interface that only has a scan option
+ * Used for the first demo */
 
 import React, { Component } from 'react';
 import {
@@ -165,23 +166,16 @@ class App extends React.Component {
       if (this.state.allow == 0){
         return (
             <View style={styles.container}>
-                <Text style={styles.textTitle}> SMD Senior Design Project </Text>
-
-                <TouchableOpacity
-                    style={styles.buttonWrite}
-                    onPress={this.writeData}>
-                    <Text style={styles.buttonText}>Write</Text>
-                </TouchableOpacity>
+                <Text style={styles.textTitle}>tap2con</Text>
+                <Text style={styles.info}>
+                  Tap Mifare Ultralight NFC to connect, control, and configure</Text>
 
                 <TouchableOpacity
                     style={styles.buttonRead}
                     onPress={this.readData}>
-                    <Text style={styles.buttonText}>Read</Text>
+                    <Text style={styles.buttonText}>Scan</Text>
                 </TouchableOpacity>
 
-                <View style={styles.log}>
-                    <Text>{this.state.log}</Text>
-                </View>
 
                 <View style={styles.log}>
                     <Text> Permission to connect to router: </Text>
@@ -220,31 +214,22 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
+        padding: 10,
+        backgroundColor: 'black'
     },
 
     textTitle: {
-        color: 'black',
+        color: 'white',
         textAlign: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        fontWeight: 'bold',
+        fontSize: 50,
     },
 
-    textInput: {
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 10,
-        height: 50,
+    info: {
         textAlign: 'center',
-        color: 'black'
-    },
-    buttonWrite: {
-        marginLeft: 20,
-        marginRight: 20,
-        marginBottom: 10,
-        height: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 8,
-        backgroundColor: 'gray'
+        color: 'white',
+        marginBottom: 30,
     },
     buttonRead: {
         marginLeft: 20,
@@ -253,10 +238,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 8,
-        backgroundColor: 'black'
+        backgroundColor: 'white',
     },
     buttonText: {
-        color: '#ffffff'
+        color: 'black',
+        fontSize: 30
     },
     log: {
         marginTop: 30,

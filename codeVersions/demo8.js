@@ -1,3 +1,8 @@
+/* Can read to Mifare 1K !!!!!
+ * With updated home page
+ * without ssh stuff yet*/
+
+
 import React, { Component } from 'react';
 import {
     View,
