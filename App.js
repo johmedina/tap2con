@@ -12,6 +12,7 @@ import {
 import NfcManager, {Ndef, NfcTech, NfcEvents} from 'react-native-nfc-manager';
 import HTML from 'react-native-render-html';
 import SSH from 'react-native-ssh';
+import { WebView } from 'react-native-webview';
 
 config = {user: 'root',host: '192.168.1.1',password: 'admin'}
 command = 'ls'
@@ -27,8 +28,6 @@ class App extends React.Component {
   constructor(props){
       super(props);
       this.state = {
-          text:'<h1>Connected devices: </h1><p>$cd ..\ncat tmp/dhcp.leases$</p>\n a lot more words here i wanna see if it works and more and something a long assssssssssss\n MORE WORDS WORF CLNKV LJKDFFKCV FKJ DSNK VOFINVCOJEN KFP NFKDLSNL OK FINE',
-          code: "password",
           match: "Denied",
           allow: 0,
           retvalue1: '',
@@ -56,23 +55,6 @@ class App extends React.Component {
       NfcManager.cancelTechnologyRequest().catch(() => 0);
     }
 
-    writeData = async () => {
-      try {
-        let resp = await NfcManager.requestTechnology(NfcTech.Ndef, {
-          alertMessage: 'Ready to write some NFC tags!'
-        });
-
-        let ndef = await NfcManager.getNdefMessage();
-        let bytes = buildTextPayload(this.state.text);
-        await NfcManager.writeNdefMessage(bytes);
-        await NfcManager.setAlertMessageIOS('I got your tag!');
-
-        this._cleanUp();
-      } catch (ex) {
-        console.warn('ex', ex);
-        this._cleanUp();
-      }
-    }
 
     readData = async () => {
       try {
@@ -182,12 +164,8 @@ class App extends React.Component {
       }
 
 
-
-
       return (
-        <View style = {styles.thing}>
-          <View><HTML html = {updated}/></View>
-        </View>
+          <WebView style = {styles.thing} source={{html: updated}} />
       )
     }
   }
@@ -248,6 +226,7 @@ const styles = StyleSheet.create({
   thing: {
     justifyContent: 'center',
     flex: 1,
+    marginTop: 300,
   }
 })
 
