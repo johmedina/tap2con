@@ -1,3 +1,5 @@
+/* 2 commands overlapping */
+
 import React, { Component } from 'react';
 import {
     View,
@@ -31,9 +33,7 @@ class App extends React.Component {
           code: "password",
           match: "Denied",
           allow: 0,
-          retvalue1: '',
-          retvalue2: '',
-          retvalue3: '',
+          retvalue: '',
           parsed: '',
           tag: {},
 
@@ -142,51 +142,33 @@ class App extends React.Component {
       var text = this.state.parsed[0]
       var updated = text
       var i = text.indexOf('$')
-      var j = updated.indexOf('$',i+1)
-      var command = updated.substring(i+1,j)
-
-      SSH.execute(config,command).then(
-          result => this.setState({retvalue1 : result}))
-      var updated = updated.replace(updated.substring(i,j+1),this.state.retvalue1)
-
-      i = updated.indexOf('$')
-      j = updated.indexOf('$',i+1)
-      command = updated.substring(i+1,j)
-
-      SSH.execute(config,command).then(
-          result => this.setState({retvalue2 : result}))
-      updated = updated.replace(updated.substring(i,j+1),this.state.retvalue2)
-
-      var k = updated.indexOf(',')
-
-      while (k != -1)
+      while (i != -1)
       {
-        updated = updated.replace(updated.substring(k,k+1),'<br>')
-        k = updated.indexOf(',',k+1)
+        var j = updated.indexOf('$',i+1)
+        var command = updated.substring(i+1,j)
+
+        SSH.execute(config,command).then(
+            result => this.setState({retvalue : result}))
+        updated = updated.replace(updated.substring(i,j+1),this.state.retvalue)
+
+        var k = updated.indexOf(',')
+
+        while (k != -1)
+        {
+          updated = updated.replace(updated.substring(k,k+1),'<br>')
+          k = updated.indexOf(',',k+1)
+        }
+
+        i = updated.indexOf('$')
       }
-
-      i = updated.indexOf('$')
-      j = updated.indexOf('$',i+1)
-      command = updated.substring(i+1,j)
-
-      SSH.execute(config,command).then(
-          result => this.setState({retvalue3 : result}))
-      updated = updated.replace(updated.substring(i,j+1),this.state.retvalue3)
-
-      var k = updated.indexOf(',')
-
-      while (k != -1)
-      {
-        updated = updated.replace(updated.substring(k,k+1),'<br>')
-        k = updated.indexOf(',',k+1)
-      }
-
-
 
 
       return (
         <View style = {styles.thing}>
           <View><HTML html = {updated}/></View>
+          <TouchableOpacity style={styles.buttonWrite} onPress={() => this.setState({allow: 0})}>
+            <Text> Go back </Text>
+          </TouchableOpacity>
         </View>
       )
     }
