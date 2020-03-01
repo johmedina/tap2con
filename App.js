@@ -1,19 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     View,
     Text,
     TouchableOpacity,
-    Platform,
-    SafeAreaView,
     StyleSheet,
-    TextInput,
-    Alert
 } from 'react-native';
+
 import NfcManager, {Ndef, NfcTech, NfcEvents} from 'react-native-nfc-manager';
 import HTML from 'react-native-render-html';
 import SSH from 'react-native-ssh';
 import { WebView } from 'react-native-webview';
 
+// configuration and credentials for ssh access and command
 config = {user: 'root',host: '192.168.1.1',password: 'admin'}
 command = 'ls'
 
@@ -22,7 +20,6 @@ function buildTextPayload(valueToWrite) {
         Ndef.textRecord(valueToWrite),
     ]);
 }
-
 
 class App extends React.Component {
   constructor(props){
@@ -38,6 +35,8 @@ class App extends React.Component {
 
       }
   }
+
+  /* ---------- NFC Component -------- */
 
   componentDidMount() {
     NfcManager.start();
@@ -97,6 +96,10 @@ class App extends React.Component {
     NfcManager.unregisterTagEvent().catch(() => 0);
   }
 
+  /* --------- End of NFC Component ---------- */
+
+  /* --------- Main render screen ----------- */
+
   render() {
     if (this.state.allow == 0){
       return (
@@ -120,6 +123,7 @@ class App extends React.Component {
       )
     }
 
+    /* --------- SSH Component ---------- */
     else {
       var text = this.state.parsed[0]
       var updated = text
@@ -162,14 +166,21 @@ class App extends React.Component {
         updated = updated.replace(updated.substring(k,k+1),'<br>')
         k = updated.indexOf(',',k+1)
       }
+      
+      /* ------------ End of SSH component ------------*/
 
-
+      // Render HTML page from NFC tag
       return (
           <WebView style = {styles.thing} source={{html: updated}} />
       )
     }
   }
+
+  /* ---------- End of Main render ----------- */
+
 }
+
+/* ------------- STYLES ------------- */
 
 const styles = StyleSheet.create({
   container: {
