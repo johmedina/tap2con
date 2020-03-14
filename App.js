@@ -12,8 +12,8 @@ import SSH from 'react-native-ssh';
 import { WebView } from 'react-native-webview';
 
 // configuration and credentials for ssh access and command
-config = {user: 'root',host: '192.168.1.1',password: 'admin'}
-command = 'ls'
+//config = {user: 'root',host: '192.168.1.1',password: 'admin'}
+//command = 'ls'
 
 function buildTextPayload(valueToWrite) {
     return Ndef.encodeMessage([
@@ -88,13 +88,22 @@ class App extends React.Component {
 
     this.setState({parsed});
 
+    NfcManager.setAlertMessageIOS('I got your tag!');
+    NfcManager.unregisterTagEvent().catch(() => 0);
+
+    //extract the header and the actual html code from the nfc content
+    var content = this.state.parsed[0];
+    var h = content.indexOf('<html>')
+    window.header = content.substring(0,h)
+    var htmlCode = content.substring(h)
+
     this.setState({
       allow: 1,
       match: 'Accepted',
+      parsed: htmlCode,
     })
-    NfcManager.setAlertMessageIOS('I got your tag!');
-    NfcManager.unregisterTagEvent().catch(() => 0);
-  }
+
+
 
   /* --------- End of NFC Component ---------- */
 
@@ -125,7 +134,18 @@ class App extends React.Component {
 
     /* --------- SSH Component ---------- */
     else {
-      var text = this.state.parsed[0]
+      var hd = window.header
+      var u = hd.indexOf('user:')
+      var hs = hd.indexOf('host:')
+      var p = hd.indexOf('password:')
+      var k = hd.indexOf('key:')
+      var usr = hd.substring(u+5, hs)
+      var hst = hd.substring(hs+5, p)
+      var pass = hd.substring(p+9, k)
+      var config = "{user: '" + usr + "', host: '" + hst + "', password: '" + pass + "'}";
+      console.warn(config)
+
+      var text = this.state.parsed
       var updated = text
       var i = text.indexOf('$')
       var j = updated.indexOf('$',i+1)
@@ -166,7 +186,7 @@ class App extends React.Component {
         updated = updated.replace(updated.substring(k,k+1),'<br>')
         k = updated.indexOf(',',k+1)
       }
-      
+
       /* ------------ End of SSH component ------------*/
 
       // Render HTML page from NFC tag
