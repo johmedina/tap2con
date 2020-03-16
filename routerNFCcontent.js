@@ -24,7 +24,8 @@
   <h1>Routing table: </h1><p>$ip r$</p>
 </div>
 </body> */
-
+const hd = "Name: OpenWRT Router Connectivity: SSH user:root host:192.168.1.1 password:admin key:9383 "
+const hd1 = "num_of_devices_paired:0 devices_paired_id: admin_phone_paired:false"
 const rcs = "<html><head><style>h1.title{text-align:center; font-size:5em;} h1.headers{display:inline; font-size:3em;} h2.sname{display:inline; font-size:3em;}"
 const rcs1 = "</style></head>"
 const rc1 = "<body><div style='margin-left:40px'><h1 class='title'>OpenWRT Router</h1> <script>function getNewSSID(){return document.getElementById('newssid').value;}\n"
@@ -38,4 +39,4 @@ const rc8 = "<div><h3>Change SSID:</h3> <label id='id1' for='newssid'>Enter new 
 const rc9 = "<input id='newssid' type='text'> <br/> <form><input type='button' value='Apply' onclick='myFunction()'></form></div>"
 const rc10 = "<br/><br/><h1 class='headers'>Connected devices: </h1><p>$cd ..\ncat tmp/dhcp.leases$</p><br/><br/><h1 class='headers'>Routing table: </h1><p>$ip r$</p>"
 const rc11 = "</div> </body> </html>"
-export const routerCommand = rcs + rcs1 + rc1 + rc2 + rc3 + rc4 + rc5 + rc6 + rc7 + rc8 + rc9 + rc10 + rc11
+export const routerCommand = hd + hd1 + rcs + rcs1 + rc1 + rc2 + rc3 + rc4 + rc5 + rc6 + rc7 + rc8 + rc9 + rc10 + rc11

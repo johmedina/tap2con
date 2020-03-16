@@ -32,6 +32,8 @@ class App extends React.Component {
           retvalue3: '',
           parsed: '',
           tag: {},
+          header: '',
+          htmlCode: '',
 
       }
   }
@@ -91,17 +93,64 @@ class App extends React.Component {
     NfcManager.setAlertMessageIOS('I got your tag!');
     NfcManager.unregisterTagEvent().catch(() => 0);
 
-    //extract the header and the actual html code from the nfc content
+    // Extract the header and the actual html code from the nfc content
     var content = this.state.parsed[0];
-    var h = content.indexOf('<html>')
-    window.header = content.substring(0,h)
-    var htmlCode = content.substring(h)
+    var h = content.indexOf('<html>');
+
+    this.setState({
+      header: content.substring(0,h),
+      htmlCode: content.substring(h),
+    })
+
+    // Process the security part of the NFC
+    this.addSecurity()
+
+  }
+
+  // Function that handles the security cross-checking upon reading the NFC tag
+  addSecurity = () => {
+    // Parse header that contains NFC security protocols
+    var hdr = this.state.header
+    var k = hdr.indexOf('key');
+    var n = hdr.indexOf('num_of_devices_paired');
+    var dp = hdr.indexOf('devices_paired_id');
+    var a = hdr.indexOf('admin_phone_paired');
+
+    var content = this.state.parsed[0];
+    var h = content.indexOf('<html>');
+
+    // NFC password
+    var nfcPass = hdr.substring(k+4, n);
+    // Number of paired devices
+    var numOfDevP = hdr.substring(n+22, dp);
+    // Array of devices devices_paired_id
+    var devId = hdr.substring(dp+18, a)
+    // Is the admin already initialized?
+    var adminPhone = hdr.substring(a+19, h)
+
+    console.warn(nfcPass, numOfDevP, devId, adminPhone)
+    //set up admin phone
+    if (adminPhone === 'false') {
+      //generate new random key
+      nfcPass = Math.floor(1000 + Math.random() * 9999)
+      console.warn(nfcPass)
+
+      numOfDevP = parseInt(numOfDevP)
+      numOfDevP = numOfDevP + 1
+
+      var arrOfDev = devId.split(",")
+      arrOfDev.push('johanne')
+      console.warn(arrOfDev)
+      adminPhone = 'true'
+
+      //write these back to the nfc tag
+    }
 
     this.setState({
       allow: 1,
       match: 'Accepted',
-      parsed: htmlCode,
     })
+  }
 
 
 
