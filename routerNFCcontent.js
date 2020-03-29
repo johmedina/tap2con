@@ -25,7 +25,7 @@
 </div>
 </body> */
 const hd = "Name: OpenWRT Router Connectivity: SSH user:root host:192.168.1.1 password:admin key:9383 "
-const hd1 = "num_of_devices_paired:0 devices_paired_id: admin_phone_paired:false"
+const hd1 = "num_of_devices_paired:0 devices_paired_id:None admin_phone_paired:false"
 const rcs = "<html><head><style>h1.title{text-align:center; font-size:5em;} h1.headers{display:inline; font-size:3em;} h2.sname{display:inline; font-size:3em;}"
 const rcs1 = "</style></head>"
 const rc1 = "<body><div style='margin-left:40px'><h1 class='title'>OpenWRT Router</h1> <script>function getNewSSID(){return document.getElementById('newssid').value;}\n"

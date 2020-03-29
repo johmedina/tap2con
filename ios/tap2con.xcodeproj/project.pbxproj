@@ -20,6 +20,7 @@
 		77DA848D189C4B01A9E81C3F /* libRNSSH.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D759B0DA109486FA8F6F4F0 /* libRNSSH.a */; };
 		9D12A6ED65EDD7885931F53A /* libPods-tap2con-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C975B04AF609FBE61080F10E /* libPods-tap2con-tvOSTests.a */; };
 		B3DF2400FBCFA03F11C877F7 /* libPods-tap2conTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17BFCCB5A5ED8259B4AAAFD7 /* libPods-tap2conTests.a */; };
+		E9974ACC748B430388F6CB52 /* libRNSSHClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62775504322F4C78808CCFA9 /* libRNSSHClient.a */; };
 		F2901DF580CE377BF1C5D6A3 /* libPods-tap2con-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46FA32ABF1A8EA09C7D57B06 /* libPods-tap2con-tvOS.a */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "tap2con-tvOS";
+		};
+		9F5AF48C242BB99000E05554 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F681EC140BDA4CD8991B9B8C /* RNSSHClient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNSSHClient;
 		};
 		9FAAEAF623EC2F93009C5458 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -71,6 +79,7 @@
 		3D759B0DA109486FA8F6F4F0 /* libRNSSH.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSSH.a; sourceTree = "<group>"; };
 		46FA32ABF1A8EA09C7D57B06 /* libPods-tap2con-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tap2con-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4765FEF1B11D4EE27EDB118D /* Pods-tap2con-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tap2con-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-tap2con-tvOSTests/Pods-tap2con-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		62775504322F4C78808CCFA9 /* libRNSSHClient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSSHClient.a; sourceTree = "<group>"; };
 		9FAAEAF823EC2FA5009C5458 /* tap2con.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = tap2con.entitlements; path = tap2con/tap2con.entitlements; sourceTree = "<group>"; };
 		AE194241C6813AE59A7A8705 /* Pods-tap2conTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tap2conTests.release.xcconfig"; path = "Target Support Files/Pods-tap2conTests/Pods-tap2conTests.release.xcconfig"; sourceTree = "<group>"; };
 		C975B04AF609FBE61080F10E /* libPods-tap2con-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tap2con-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +87,7 @@
 		E94F27BAAD825FCA8F927F24 /* Pods-tap2con-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tap2con-tvOS.release.xcconfig"; path = "Target Support Files/Pods-tap2con-tvOS/Pods-tap2con-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		F681EC140BDA4CD8991B9B8C /* RNSSHClient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSSHClient.xcodeproj; path = "../node_modules/react-native-ssh-sftp/ios/RNSSHClient.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +105,7 @@
 			files = (
 				615ED429AF1877BF1F7713D3 /* libPods-tap2con.a in Frameworks */,
 				77DA848D189C4B01A9E81C3F /* libRNSSH.a in Frameworks */,
+				E9974ACC748B430388F6CB52 /* libRNSSHClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				25C1EAB3C28043BCAAEC6966 /* RNSSH.xcodeproj */,
+				F681EC140BDA4CD8991B9B8C /* RNSSHClient.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -212,10 +224,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9F5AF489242BB99000E05554 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9F5AF48D242BB99000E05554 /* libRNSSHClient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9FAAEAF223EC2F93009C5458 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
 				3D759B0DA109486FA8F6F4F0 /* libRNSSH.a */,
+				62775504322F4C78808CCFA9 /* libRNSSHClient.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -353,6 +374,10 @@
 					ProductGroup = 9FAAEAF323EC2F93009C5458 /* Products */;
 					ProjectRef = 25C1EAB3C28043BCAAEC6966 /* RNSSH.xcodeproj */;
 				},
+				{
+					ProductGroup = 9F5AF489242BB99000E05554 /* Products */;
+					ProjectRef = F681EC140BDA4CD8991B9B8C /* RNSSHClient.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -365,6 +390,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		9F5AF48D242BB99000E05554 /* libRNSSHClient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSSHClient.a;
+			remoteRef = 9F5AF48C242BB99000E05554 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9FAAEAF723EC2F93009C5458 /* libRNSSH.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -640,12 +672,14 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ssh/ios",
+					"$(SRCROOT)/../node_modules/react-native-ssh-sftp/ios/**",
 				);
 				INFOPLIST_FILE = tap2conTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -668,12 +702,14 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ssh/ios",
+					"$(SRCROOT)/../node_modules/react-native-ssh-sftp/ios/**",
 				);
 				INFOPLIST_FILE = tap2conTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -699,6 +735,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ssh/ios",
+					"$(SRCROOT)/../node_modules/react-native-ssh-sftp/ios/**",
 				);
 				INFOPLIST_FILE = tap2con/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -724,6 +761,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ssh/ios",
+					"$(SRCROOT)/../node_modules/react-native-ssh-sftp/ios/**",
 				);
 				INFOPLIST_FILE = tap2con/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -754,11 +792,13 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ssh/ios",
+					"$(SRCROOT)/../node_modules/react-native-ssh-sftp/ios/**",
 				);
 				INFOPLIST_FILE = "tap2con-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -790,11 +830,13 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ssh/ios",
+					"$(SRCROOT)/../node_modules/react-native-ssh-sftp/ios/**",
 				);
 				INFOPLIST_FILE = "tap2con-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -825,11 +867,13 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ssh/ios",
+					"$(SRCROOT)/../node_modules/react-native-ssh-sftp/ios/**",
 				);
 				INFOPLIST_FILE = "tap2con-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -860,11 +904,13 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-ssh/ios",
+					"$(SRCROOT)/../node_modules/react-native-ssh-sftp/ios/**",
 				);
 				INFOPLIST_FILE = "tap2con-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
