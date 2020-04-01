@@ -1,6 +1,6 @@
 export var routerCommand =
   'Name: OpenWRT Router\
-  Connectivity: SSH user:root host:192.168.1.1 password:admin num_of_devices_paired:0 devices_paired_id:None dp_pass:None<html>\
+  Connectivity: SSH user:root host:192.168.1.1 password:admin num_of_devices_paired:1 devices_paired_id:johanne dp_pass:medina<html>\
     <style> body {font-family: Helvetica;color: white;background-color:black; margin-top:150px; margin-left:35px;}\
     h1.title{text-align: center; font-size:5em;} h1.headers{display:inline; font-size:3em;}\
     h2.sname{display: inline; font-size:3em;}\

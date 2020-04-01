@@ -20,6 +20,7 @@ import HTML from 'react-native-render-html';
 import { WebView } from 'react-native-webview';
 import {routerCommand} from './nfcContent';
 import SSH from 'react-native-ssh';
+import { JSHash, CONSTANTS } from "react-native-hash";
 import Overlay from 'react-native-modal-overlay';
 
 function buildTextPayload(valueToWrite) {
@@ -43,6 +44,7 @@ class HomePage extends React.Component {
           htmlCode: '',
           username: '',
           password: '',
+          hashed: '',
           updated: '',
           modalVisible: false,
           newUser: '',
@@ -150,6 +152,8 @@ class HomePage extends React.Component {
 
   }
 
+
+
   // Function that handles the security cross-checking upon reading the NFC tag
   addSecurity = () => {
     // Parse header that contains NFC security protocols
@@ -174,9 +178,8 @@ class HomePage extends React.Component {
       devIdPass: devIdPass,
     })
 
-    //get username and Password
+    //get input username and Password
     var uname = this.state.username.trim()
-    var pss = this.state.password.trim()
 
     var idArray = devId.split(',')
     var passArray = devIdPass.split(',')
@@ -184,6 +187,7 @@ class HomePage extends React.Component {
 
     numOfDevP = idArray.length;
     var adminUser = idArray[0].trim()
+    var adminPass = passArray[0].trim()
 
     //set up initial user
     if (adminUser === 'None') {
@@ -193,8 +197,10 @@ class HomePage extends React.Component {
       var newDevId = this.state.username
       newDevId = newDevId.concat(' ')
 
-      var newDevIdPass = this.state.password
+
+      var newDevIdPass = this.state.hashed
       newDevIdPass = newDevIdPass.concat(' ')
+      console.log('newDevPass:', newDevIdPass)
 
       //write these back to the nfc tag
       var newHeader = hdr.replace(numOfDevP, newNumOfDevP)
@@ -212,7 +218,7 @@ class HomePage extends React.Component {
     }
 
     //if user is the admin
-    else if (adminUser === uname){
+    else if ((adminUser === uname) && (this.state.hashed === adminPass)){
       this.setState({
         continue: 1,
         match: 'Accepted',
@@ -224,7 +230,9 @@ class HomePage extends React.Component {
     else {
       var okUser = false;
       for(let i=0; i<numOfDevP; i++){
-        if(uname === idArray[i].trim()){
+        console.log('hashed:', this.state.hashed)
+        console.log('passArray:', passArray[i])
+        if((uname === idArray[i].trim()) && (this.state.hashed === passArray[i].trim())){
           okUser = true;
         }
       }
@@ -292,6 +300,7 @@ class HomePage extends React.Component {
   addUser = () => {
     var nu = this.state.newUser
     var np = this.state.newPass
+    console.log('np', np)
 
     // Parse header that contains NFC security protocols
     var hdr = this.state.header
@@ -313,7 +322,7 @@ class HomePage extends React.Component {
     var passArray = devIdPass.split(',')
 
     //allow access only to admin
-    if ((this.state.username.trim() === idArray[0].trim()) && this.state.password.trim() === passArray[0].trim())
+    if ((this.state.username.trim() === idArray[0].trim()) && this.state.hashed.trim() === passArray[0].trim())
     {
       // Increment the number of paired devices
       var newNumOfDevP = idArray.length + 1
@@ -340,6 +349,30 @@ class HomePage extends React.Component {
     }
 
     }
+
+
+  doPassword = (pw) => {
+    this.setState({password: pw})
+    var pss = this.state.password.trim()
+    console.log('input password:', pss)
+    //hash the password
+    JSHash(pss, CONSTANTS.HashAlgorithms.keccak)
+      .then(hash => this.setState({hashed: hash}))
+      .catch(e => console.log(e));
+
+    console.log(this.state.hashed)
+  }
+
+  doPasswordNew = (pw) => {
+    this.setState({newPass: pw})
+    var pss = this.state.newPass.trim()
+    //hash the password
+    JSHash(pss, CONSTANTS.HashAlgorithms.keccak)
+      .then(hash => this.setState({newPass: hash}))
+      .catch(e => console.log(e));
+
+    console.log(this.state.newPass)
+  }
 
 
 
@@ -371,7 +404,7 @@ class HomePage extends React.Component {
               secureTextEntry={true}
               autoCapitalize = "none"
               style= {[styles.inputBoxes, {fontStyle:'italic'}]}
-              onChange={(event) => this.setState({password: event.nativeEvent.text})}
+              onChange={(event) => this.doPassword(event.nativeEvent.text)}
 
             />
           </View>
@@ -451,7 +484,7 @@ class HomePage extends React.Component {
                           autoCapitalize = "none"
                           style= {[styles.inputBoxes, {fontStyle:'italic', borderBottomWidth: 1,
                           borderBottomColor: 'black', color:'black',}]}
-                          onChange={(event) => this.setState({newPass: event.nativeEvent.text})}
+                          onChange={(event) => this.doPasswordNew(event.nativeEvent.text)}
 
                         />
                       </View>

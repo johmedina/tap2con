@@ -183,6 +183,8 @@ PODS:
     - React-cxxreact (= 0.61.5)
     - React-jsi (= 0.61.5)
   - React-jsinspector (0.61.5)
+  - react-native-hash (1.2.5):
+    - React
   - react-native-nfc-manager (2.1.1):
     - React
   - react-native-webview (8.0.6):
@@ -242,6 +244,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-hash (from `../node_modules/react-native-hash`)
   - react-native-nfc-manager (from `../node_modules/react-native-nfc-manager`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -291,6 +294,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-hash:
+    :path: "../node_modules/react-native-hash"
   react-native-nfc-manager:
     :path: "../node_modules/react-native-nfc-manager"
   react-native-webview:
@@ -335,6 +340,7 @@ SPEC CHECKSUMS:
   React-jsi: cb2cd74d7ccf4cffb071a46833613edc79cdf8f7
   React-jsiexecutor: d5525f9ed5f782fdbacb64b9b01a43a9323d2386
   React-jsinspector: fa0ecc501688c3c4c34f28834a76302233e29dc0
+  react-native-hash: eaa07b6cfbab62f18b49f1d6d98e8c285f9df005
   react-native-nfc-manager: bb6c2603d59e4a9775a708ec8aa5bdfde2c24eae
   react-native-webview: e11b5d7da61ac3acee13f3ae3184d417f773c5d5
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -349,6 +355,6 @@ SPEC CHECKSUMS:
   ReactCommon: 198c7c8d3591f975e5431bec1b0b3b581aa1c5dd
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 705d6a5d3756a64289296561091e0ee00c43bfeb
+PODFILE CHECKSUM: 311164fb66f948decfbbaf50bc6cfe61bbefd2f7
 
 COCOAPODS: 1.8.4

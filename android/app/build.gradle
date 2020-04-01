@@ -179,6 +179,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-hash')
     implementation project(':react-native-ssh-sftp')
     implementation project(':react-native-ssh')
     implementation fileTree(dir: "libs", include: ["*.jar"])

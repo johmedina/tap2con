@@ -37,6 +37,9 @@ target 'tap2con' do
   pod 'NMSSH', '~> 2.2.5'
 
 
+
+  pod 'react-native-hash', :path => '../node_modules/react-native-hash'
+
   target 'tap2conTests' do
     inherit! :search_paths
     # Pods for testing
