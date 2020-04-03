@@ -322,7 +322,7 @@ class HomePage extends React.Component {
     var passArray = devIdPass.split(',')
 
     //allow access only to admin
-    if ((this.state.username.trim() === idArray[0].trim()) && this.state.hashed.trim() === passArray[0].trim())
+    if ((this.state.username.trim() === idArray[0].trim()) && this.state.hashed === passArray[0].trim())
     {
       // Increment the number of paired devices
       var newNumOfDevP = idArray.length + 1
@@ -352,8 +352,8 @@ class HomePage extends React.Component {
 
 
   doPassword = (pw) => {
-    this.setState({password: pw})
-    var pss = this.state.password.trim()
+    var pss = pw.trim()
+    this.setState({password: pss})
     console.log('input password:', pss)
     //hash the password
     JSHash(pss, CONSTANTS.HashAlgorithms.keccak)
@@ -364,8 +364,7 @@ class HomePage extends React.Component {
   }
 
   doPasswordNew = (pw) => {
-    this.setState({newPass: pw})
-    var pss = this.state.newPass.trim()
+    var pss = pw.trim()
     //hash the password
     JSHash(pss, CONSTANTS.HashAlgorithms.keccak)
       .then(hash => this.setState({newPass: hash}))
