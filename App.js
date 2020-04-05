@@ -1,8 +1,32 @@
 //WORKING FILE THE BEST SO FAR
+/* Can read and write to 32K with SSH, security, and hashing */
 
+/* The following describes the states used in the code and their functionality
+ *
+ *  State         ||    Description
+ *  ----------------------------------------------------------------------------
+ *  continue      ||    flag to move on to the next page if uninitialized or admin
+ *  text          ||    string to write to the NFC tag
+ *  allow         ||    flag if access to the device is allowed - proceed to WebView
+ *  parsed        ||    store raw data from reading from the NFC tags
+ *  tag           ||    store the tag ID from reading the NFC tags
+ *  header        ||    store the header from the NFC tag read
+ *  htmlCode      ||    store the html part of the string from the NFC tag read
+ *  username      ||    store the input username
+ *  password      ||    store the input password
+ *  hashed        ||    store the input password's hashed value
+ *  updated       ||    store the executed code from ssh
+ *  modalVisible  ||    flag for displaying overlay when adding new users
+ *  newUser       ||    store the username of the new username added
+ *  newPass       ||    store the password of the new user password added
+ *  adminName     ||    store the admin name from the NFC
+ *  allowToAdd    ||    flag if curren user is allowed to add new users
+ *  numOfDevP     ||    store the number of devices paired with
+ *  devIds        ||    store all the devices paired from the NFC
+ *  devIdPass     ||    store all the devices paired passwords from the NFC
+ *  goToWebview   ||    flag for allowing access to Webview
+ *  */
 
-/* Can read and write to 32K with SSH
- */
 
 import React, { Component, Fragment } from 'react';
 import {
@@ -16,27 +40,19 @@ import {
     Alert
 } from 'react-native';
 import NfcManager, {Ndef, NfcTech, NfcEvents} from 'react-native-nfc-manager';
-import HTML from 'react-native-render-html';
 import { WebView } from 'react-native-webview';
-import {routerCommand} from './nfcContent';
 import SSH from 'react-native-ssh';
 import { JSHash, CONSTANTS } from "react-native-hash";
 import Overlay from 'react-native-modal-overlay';
 
-function buildTextPayload(valueToWrite) {
-    return Ndef.encodeMessage([
-        Ndef.textRecord(valueToWrite),
-    ]);
-}
 
 
-class HomePage extends React.Component {
+class App extends React.Component {
   constructor(props){
       super(props);
       this.state = {
           continue: 0,
-          text: routerCommand,
-          match: "Denied",
+          text: '',
           allow: 0,
           parsed: '',
           tag: {},
@@ -50,7 +66,6 @@ class HomePage extends React.Component {
           newUser: '',
           newPass: '',
           adminName: '',
-          adminKey: '',
           allowToAdd: 0,
           numOfDevP: 0,
           devIds: '',
@@ -77,6 +92,14 @@ class HomePage extends React.Component {
     }
 
     writeData = async () => {
+      /* Auxiliary function for encoding an Ndef message to
+       * bytes used for writing to NFC tags */
+      function buildTextPayload(valueToWrite) {
+          return Ndef.encodeMessage([
+              Ndef.textRecord(valueToWrite),
+          ]);
+      }
+      
       try {
         let resp = await NfcManager.requestTechnology(NfcTech.Ndef, {
           alertMessage: 'Ready to write some NFC tags!'
@@ -149,7 +172,6 @@ class HomePage extends React.Component {
     // Process the security part of the NFC
     this.addSecurity()
 
-
   }
 
 
@@ -212,7 +234,6 @@ class HomePage extends React.Component {
 
       this.setState({
         continue: 1,
-        match: 'Accepted',
         text: newContent,
       })
     }
@@ -221,7 +242,6 @@ class HomePage extends React.Component {
     else if ((adminUser === uname) && (this.state.hashed === adminPass)){
       this.setState({
         continue: 1,
-        match: 'Accepted',
         text: content,
       })
 
@@ -435,11 +455,6 @@ class HomePage extends React.Component {
                   <Text style={styles.buttonText}>SCAN</Text>
               </TouchableOpacity>
 
-
-              <View style={styles.log}>
-                  <Text> Permission to connect to router: </Text>
-                  <Text>{this.state.match}</Text>
-              </View>
 
               <TouchableOpacity onPress={() => this.setState({modalVisible: true})}>
                 <Text style={styles.addusers}> + Add Users </Text>
@@ -705,4 +720,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default HomePage;
+export default App;
