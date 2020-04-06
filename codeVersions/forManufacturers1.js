@@ -11,8 +11,7 @@ import {
     SafeAreaView,
     StyleSheet,
     TextInput,
-    Alert,
-    NativeModules
+    Alert
 } from 'react-native';
 import NfcManager, {Ndef, NfcTech, NfcEvents} from 'react-native-nfc-manager';
 import HTML from 'react-native-render-html';
@@ -25,7 +24,6 @@ function buildTextPayload(valueToWrite) {
     ]);
 }
 
-var Aes = NativeModules.Aes;
 
 class App extends React.Component {
   constructor(props){
@@ -62,49 +60,12 @@ class App extends React.Component {
       NfcManager.cancelTechnologyRequest().catch(() => 0);
     }
 
-    generateKey = (password, salt, cost, length) => Aes.pbkdf2(password, salt, cost, length)
-
-    encrypt = (text, key) => {
-        return Aes.randomKey(16).then(iv => {
-            return Aes.encrypt(text, key, iv).then(cipher => ({
-                cipher,
-                iv,
-            }))
-        })
-    }
-
-    decrypt = (encryptedData, key) => Aes.decrypt(encryptedData.cipher, key, encryptedData.iv)
-
-    encryptFunction() {
-      try {
-        this.generateKey('dcnfjlkbd298SKDH', 'DCJKN278hdsb', 5000, 256).then(key => {
-            console.log('Key:', key)
-            this.encrypt(routerCommand, key)
-                .then(({ cipher, iv }) => {
-                    console.log('Encrypted:', cipher)
-                    var myText = iv + ' ~ '+ cipher
-                    this.setState({text: myText})
-
-                    Aes.hmac256(cipher, key).then(hash => {
-                        console.log('HMAC', hash)
-                    })
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        })
-      } catch (e) {
-          console.error(e)
-      }
-    }
-
     writeData = async () => {
       try {
         let resp = await NfcManager.requestTechnology(NfcTech.Ndef, {
           alertMessage: 'Ready to write some NFC tags!'
         });
 
-        this.encryptFunction()
         let ndef = await NfcManager.getNdefMessage();
         let bytes = buildTextPayload(this.state.text);
         console.log('writing log ', this.state.text)

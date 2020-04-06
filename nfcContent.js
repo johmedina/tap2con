@@ -1,5 +1,5 @@
 export var routerCommand = 'Name: OpenWRT Router\
-  Connectivity: SSH user:root host:192.168.1.1 password:admin num_of_devices_paired:0 devices_paired_id:None dp_pass:None<html>\
+  Connectivity:SSH user:root host:192.168.1.1 password:admin num_of_devices_paired:0 devices_paired_id:None dp_pass:None<html>\
     <body> <h1 class=\'title\'> OpenWRT Router </h1>\
         <script>\
             function getNewSSID() {\

@@ -25,7 +25,10 @@
  *  devIds        ||    store all the devices paired from the NFC
  *  devIdPass     ||    store all the devices paired passwords from the NFC
  *  goToWebview   ||    flag for allowing access to Webview
- *  */
+ *  ctype         ||    connectivity type read from the NFC tag
+ *
+
+ WITH OPTIONS TO CONNECT TO SSH, BLE, AND WIFI */
 
 
 import React, { Component, Fragment } from 'react';
@@ -71,6 +74,7 @@ class App extends React.Component {
           devIds: '',
           devIdPass: '',
           goToWebview: false,
+          ctype: '',
 
       }
   }
@@ -102,14 +106,14 @@ class App extends React.Component {
 
       try {
         let resp = await NfcManager.requestTechnology(NfcTech.Ndef, {
-          alertMessage: 'Ready to write some NFC tags!'
+          alertMessage: 'Scan to Continue'
         });
 
         let ndef = await NfcManager.getNdefMessage();
         let bytes = buildTextPayload(this.state.text);
         console.log('writing log: ', this.state.text)
         await NfcManager.writeNdefMessage(bytes);
-        await NfcManager.setAlertMessageIOS('I got your tag!');
+        await NfcManager.setAlertMessageIOS('Accessing Device...');
 
         if(this.state.goToWebview == true)
         {
@@ -156,7 +160,7 @@ class App extends React.Component {
 
     this.setState({parsed});
 
-    NfcManager.setAlertMessageIOS('I got your tag!');
+    NfcManager.setAlertMessageIOS('Login Successful');
     NfcManager.unregisterTagEvent().catch(() => 0);
 
 
@@ -171,6 +175,15 @@ class App extends React.Component {
 
     // Process the security part of the NFC
     this.addSecurity()
+
+    // Check which medium to use to connect to the device
+    var hd = this.state.header
+    var c = hd.indexOf('Connectivity:')
+    //Connectivity choices: SSH, BLE, WFI
+    var type = hd.substring(c+13, c+16)
+    this.setState({ctype: type})
+    console.log(this.state.ctype)
+
 
   }
 
@@ -420,7 +433,6 @@ class App extends React.Component {
   }
 
 
-
   render() {
     if (this.state.continue == 0){
       return(
@@ -542,55 +554,81 @@ class App extends React.Component {
       }
 
       else {
-        var out = ''
-        var z = 0
-        var i = 0
-        var j = 0
-        //get the user, host, and password variables from the header
-        var hd = this.state.header
-        var u = hd.indexOf('user:')
-        var hs = hd.indexOf('host:')
-        var p = hd.indexOf('password:')
-        var k = hd.indexOf('num_of_devices_paired:')
-        var usr = hd.substring(u+5, hs-1)
-        var hst = hd.substring(hs+5, p-1)
-        var pass = hd.substring(p+9, k-1)
-        var config ={user: usr ,host: hst, password: pass}
-        console.log(config)
+        if (this.state.ctype.trim() === "SSH"){
+          var out = ''
+          var z = 0
+          var i = 0
+          var j = 0
+          //get the user, host, and password variables from the header
+          var hd = this.state.header
+          var u = hd.indexOf('user:')
+          var hs = hd.indexOf('host:')
+          var p = hd.indexOf('password:')
+          var k = hd.indexOf('num_of_devices_paired:')
+          var usr = hd.substring(u+5, hs-1)
+          var hst = hd.substring(hs+5, p-1)
+          var pass = hd.substring(p+9, k-1)
+          var config ={user: usr ,host: hst, password: pass}
+          console.log(config)
 
-        var out_array = []
-        var command_array = []
-        var code = this.state.htmlCode
+          var out_array = []
+          var command_array = []
+          var code = this.state.htmlCode
 
-        var updated = code
-        i = code.indexOf('$')
-        while (i != -1){
-          j = code.indexOf('$',i+1)
-          var command = code.substring(i+1,j)
+          var updated = code
+          i = code.indexOf('$')
+          while (i != -1){
+            j = code.indexOf('$',i+1)
+            var command = code.substring(i+1,j)
 
-          command_array.push(command)
+            command_array.push(command)
 
-          SSH.execute(config,command).then(
-            result => {
-              out_array.push(result)
-              if (out_array.length == command_array.length){
-                this.update_html(out_array,updated)
-            }}
+            SSH.execute(config,command).then(
+              result => {
+                out_array.push(result)
+                if (out_array.length == command_array.length){
+                  this.update_html(out_array,updated)
+              }}
+            )
+
+            i = code.indexOf('$',j+1)
+
+          }
+
+          return (
+              <WebView
+                style = {styles.thing}
+                source={{html: this.state.updated}}
+                onMessage={event => {
+                  this.changeSandP(config, event.nativeEvent.data);
+                }}
+              />
           )
-
-          i = code.indexOf('$',j+1)
-
         }
 
-        return (
+        if (this.state.ctype.trim() === "BLE")
+        {
+          return(
             <WebView
               style = {styles.thing}
-              source={{html: this.state.updated}}
-              onMessage={event => {
-                this.changeSandP(config, event.nativeEvent.data);
-              }}
+              source={{html: this.state.htmlCode}}
             />
-        )
+          )
+        }
+
+        if (this.state.ctype.trim() === "WFI")
+        {
+          return(
+            <WebView
+              style = {styles.thing}
+              source={{html: this.state.htmlCode}}
+            />
+          )
+        }
+
+        else {
+          return(null)
+        }
       }
 
     }
