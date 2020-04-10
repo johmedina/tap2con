@@ -26,6 +26,7 @@
  *  devIdPass     ||    store all the devices paired passwords from the NFC
  *  goToWebview   ||    flag for allowing access to Webview
  *  ctype         ||    connectivity type read from the NFC tag
+ *  decryptedText ||    decryptedText
  *  */
 
 

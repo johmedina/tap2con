@@ -26,9 +26,7 @@
  *  devIdPass     ||    store all the devices paired passwords from the NFC
  *  goToWebview   ||    flag for allowing access to Webview
  *  ctype         ||    connectivity type read from the NFC tag
- *
-
- WITH OPTIONS TO CONNECT TO SSH, BLE, AND WIFI */
+ *  */
 
 
 import React, { Component, Fragment } from 'react';
@@ -40,7 +38,8 @@ import {
     SafeAreaView,
     StyleSheet,
     TextInput,
-    Alert
+    Alert,
+    NativeModules
 } from 'react-native';
 import NfcManager, {Ndef, NfcTech, NfcEvents} from 'react-native-nfc-manager';
 import { WebView } from 'react-native-webview';
@@ -48,7 +47,7 @@ import SSH from 'react-native-ssh';
 import { JSHash, CONSTANTS } from "react-native-hash";
 import Overlay from 'react-native-modal-overlay';
 
-
+var Aes = NativeModules.Aes;
 
 class App extends React.Component {
   constructor(props){
@@ -75,6 +74,7 @@ class App extends React.Component {
           devIdPass: '',
           goToWebview: false,
           ctype: '',
+          decryptedText: '',
 
       }
   }
@@ -95,6 +95,43 @@ class App extends React.Component {
       NfcManager.cancelTechnologyRequest().catch(() => 0);
     }
 
+    generateKey = (password, salt, cost, length) => Aes.pbkdf2(password, salt, cost, length)
+
+    encrypt = (text, key) => {
+        return Aes.randomKey(16).then(iv => {
+            return Aes.encrypt(text, key, iv).then(cipher => ({
+                cipher,
+                iv,
+            }))
+        })
+    }
+
+    decrypt = (encryptedData, key) => Aes.decrypt(encryptedData.cipher, key, encryptedData.iv)
+
+    encryptFunction() {
+      try {
+        this.generateKey('dcnfjlkbd298SKDH', 'DCJKN278hdsb', 5000, 256).then(key => {
+            console.log('Key:', key)
+            this.encrypt(this.state.text, key)
+                .then(({ cipher, iv }) => {
+                    console.log('Encrypted:', cipher)
+                    var myText = iv + ' ~ '+ cipher
+                    this.setState({text: myText})
+
+                    Aes.hmac256(cipher, key).then(hash => {
+                        console.log('HMAC', hash)
+                    })
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        })
+      } catch (e) {
+          console.error(e)
+      }
+    }
+
+
     writeData = async () => {
       /* Auxiliary function for encoding an Ndef message to
        * bytes used for writing to NFC tags */
@@ -109,6 +146,7 @@ class App extends React.Component {
           alertMessage: 'Scan to Continue'
         });
 
+        this.encryptFunction()
         let ndef = await NfcManager.getNdefMessage();
         let bytes = buildTextPayload(this.state.text);
         console.log('writing log: ', this.state.text)
@@ -134,6 +172,36 @@ class App extends React.Component {
       } catch (ex) {
         console.warn('ex', ex);
         NfcManager.unregisterTagEvent().catch(() => 0);
+      }
+    }
+
+    asyncDecrypt = async(cipher, key, iv) => {
+      try {
+          var text = await this.decrypt({ cipher, iv }, key)
+          this.setState({decryptedText:text})
+          console.log('decText:', this.state.decryptedText)
+
+          var h = text.indexOf('<html>');
+
+          this.setState({
+            header: text.substring(0,h),
+            htmlCode: text.substring(h),
+          })
+
+          // Process the security part of the NFC
+          this.addSecurity()
+
+          // Check which medium to use to connect to the device
+          var hd = this.state.header
+          var c = hd.indexOf('Connectivity:')
+          //Connectivity choices: SSH, BLE, WFI
+          var type = hd.substring(c+13, c+16)
+          this.setState({ctype: type})
+          console.log(this.state.ctype)
+
+      }
+      catch (e) {
+          console.error(e)
       }
     }
 
@@ -164,26 +232,16 @@ class App extends React.Component {
     NfcManager.unregisterTagEvent().catch(() => 0);
 
 
-    // Extract the header and the actual html code from the nfc content
+    // Decrypt the NFC data
     var content = this.state.parsed[0];
-    var h = content.indexOf('<html>');
+    var endOfIV = content.indexOf(' ~ ')
+    var iv = content.substring(0,endOfIV).trim()
+    var cipher = content.substring(endOfIV+3)
 
-    this.setState({
-      header: content.substring(0,h),
-      htmlCode: content.substring(h),
+    this.generateKey('dcnfjlkbd298SKDH', 'DCJKN278hdsb', 5000, 256).then(key => {
+      this.asyncDecrypt(cipher, key, iv)
+
     })
-
-    // Process the security part of the NFC
-    this.addSecurity()
-
-    // Check which medium to use to connect to the device
-    var hd = this.state.header
-    var c = hd.indexOf('Connectivity:')
-    //Connectivity choices: SSH, BLE, WFI
-    var type = hd.substring(c+13, c+16)
-    this.setState({ctype: type})
-    console.log(this.state.ctype)
-
 
   }
 
@@ -197,7 +255,7 @@ class App extends React.Component {
     var dp = hdr.indexOf('devices_paired_id');
     var pss = hdr.indexOf('dp_pass')
 
-    var content = this.state.parsed[0];
+    var content = this.state.decryptedText;
     var h = content.indexOf('<html>');
 
     // Number of paired devices
