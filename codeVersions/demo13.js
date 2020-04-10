@@ -1,5 +1,5 @@
 //WORKING FILE THE BEST SO FAR
-/* Can read and write to 32K with SSH, security, and hashing */
+/* Can read and write to 32K with SSH, security, hashing, and encryption */
 
 /* The following describes the states used in the code and their functionality
  *
@@ -26,6 +26,7 @@
  *  devIdPass     ||    store all the devices paired passwords from the NFC
  *  goToWebview   ||    flag for allowing access to Webview
  *  ctype         ||    connectivity type read from the NFC tag
+ *  decryptedText ||    decrypted text
  *  */
 
 
@@ -118,9 +119,6 @@ class App extends React.Component {
                     var myText = iv + ' ~ '+ cipher
                     this.setState({text: myText})
 
-                    Aes.hmac256(cipher, key).then(hash => {
-                        console.log('HMAC', hash)
-                    })
                 })
                 .catch(error => {
                     console.log(error)
@@ -368,7 +366,7 @@ class App extends React.Component {
     var dp = hdr.indexOf('devices_paired_id');
     var pss = hdr.indexOf('dp_pass')
 
-    var content = this.state.parsed[0];
+    var content = this.state.decryptedText;
     var h = content.indexOf('<html>');
 
     // Number of paired devices
