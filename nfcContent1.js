@@ -3,16 +3,16 @@ export var routerCommand = 'Name: OpenWRT Router\
     <body> <h1 class=\'title\'> OpenWRT Router </h1>\
         <script>\
             function getNewSSID() {\
-            return document.getElementById(\'newssid\').value;\}\
+            return document.getElementById(\'newssid\').value;}\
             function getNewPass() {\
-            return document.getElementById(\'newpass\').value;\}\
+            return document.getElementById(\'newpass\').value;}\
             function myFunction (){\
             if (getNewSSID() != \'\'){\
                 document.getElementById(\'ssid\').innerHTML = getNewSSID();\
-                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].ssid=\'\"+ getNewSSID() +\"\' \nuci commit wireless\");\}\
+                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].ssid=\'\"+ getNewSSID() +\"\' \\nuci commit wireless\");}\
             }\
             function myFunction2 (){\
-                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].key=\'\"+ getNewPass() +\"\' \nuci commit wireless\");\}\
+                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].ssid=\'\"+ getNewSSID() +\"\' \\nuci commit wireless\");}\
         </script>\
         <div class=\'change-ssid\'>\
             <div class=\'ssid\'>\
@@ -34,61 +34,49 @@ export var routerCommand = 'Name: OpenWRT Router\
             </div>\
         </div>\
         <div class=\'connected-devices\'>\
-            <h1 class=\'connected-devices-title\'>Connected Devices</h1>\
-        		<div class=\'connected-devices-table\'>\
+            <h1 class=\'connected-devices-title\'>Connected devices: </h1>\
+            <div class=\'connected-devices-table\'>\
                 <table>$cd ..\n/etc/config/show_wifi_clients.sh$</table>\
             </div>\
         </div>\
         <div class=\'routing-table\'>\
-            <h1 class=\'routing-table-title\'>Routing Table </h1>\
-            <div class=\'routing-table-table\'>\
+            <h1 class=\'headers\'>Routing table: </h1>\
             <table>$ip r$</table>\
-            </div>\
         </div>\
         <div class=\'network-traffic\'>\
-            <h1 class=\'network-traffic-title\'>Network Traffic</h1>\
-            <p class=\'network-traffic-contents\'>$vnstat -i br-lan$</p>\
+            <h1 class=\'headers\'>Network Traffic</h1>\
+            <p>$vnstat -i br-lan$</p>\
         </div>\
     </body>\
     <style>\
         body {\
             font-family: Helvetica;\
             color: white;\
-            background-color:rgb(12, 12, 12);\
-            opacity: 1;\
-            animation: fade 2s linear;\
+            background-color:black;\
             margin-top: 100px;\
-        }\
-        @keyframes fade {\
-            0% {opacity:0}\
-            50% {opacity:1}\
         }\
         h1.title {\
             border-radius: 25px;\
             text-align: center;\
             font-size:5em;\
             background-color: #191919;\
-            margin-right: 20px;\
-            margin-left: 20px;\
             padding-top: 50px;\
             padding-bottom: 50px;\
             color:white;\
         }\
         h1.headers {\
             display:inline;\
-            font-size:2.5em;\
+            font-size:3em;\
         }\
-      	.change-ssid {\
-            margin-left: 20px;\
-            margin-right: 20px;\
+        .change-ssid {\
             background-color: #242424;\
             border-radius: 25px;\
             padding: 20px;\
-      	}\
+        }\
         div.ssid {\
             font-size: 20px;\
             text-align: center;\
-            background-color: #141414;\
+            background-color: #191919;\
             padding-top: 15px;\
             padding-bottom: 15px;\
             border-radius: 25px;\
@@ -98,18 +86,18 @@ export var routerCommand = 'Name: OpenWRT Router\
         }\
         span.actual-ssid {\
             color: rgb(50, 145, 189);\
-         		font-size: 35px;\
+            font-size: 35px;\
         }\
-      	h1.headers {\
-      	    margin-left: 30px;\
+        h1.headers {\
+          margin-left: 30px;\
           font-size: 30px;\
-      	}\
-      	p {\
-      		margin-left: 30px;\
-      	}\
-      	h2 {\
-      		font-size: 30px;\
-      	}\
+        }\
+        p {\
+          margin-left: 30px;\
+        }\
+        h2 {\
+          font-size: 30px;\
+        }\
         .change-input {\
             margin-top: 15px;\
             padding-left: 30px;\
@@ -119,7 +107,7 @@ export var routerCommand = 'Name: OpenWRT Router\
             padding-bottom: 15px;\
             border-radius: 25px;\
         }\
-      	label {\
+        label {\
             font-size: 20px;\
             padding-right: 10px;\
         }\
@@ -145,108 +133,55 @@ export var routerCommand = 'Name: OpenWRT Router\
         input[type=button] {\
             background-color: rgb(16, 54, 71);\
             color: white;\
-            padding: 14px 20px;\
-            margin: 8px 0;\
+            padding: 24px 38px;\
+            margin: 12px 0;\
             border: none;\
             border-radius: 20px;\
             cursor: pointer;\
         }\
-      	input[type=button]:active {\
+        input[type=button]:active {\
             background-color: rgb(30, 84, 109);\
         }\
         .connected-devices {\
-            margin-right: 20px;\
-            margin-left: 20px;\
             background-color: #242424;\
             border-radius: 25px;\
             margin-top: 20px;\
-          	padding-bottom: 1px;\
-            padding-top: 1px;\
+            padding-bottom: 25px;\
         }\
-      	.connected-devices-title {\
+        h1.connected-devices-title {\
+            padding-top: 20px;\
             padding-left: 30px;\
-            font-size: 30px;\
-            background-color: #141414;\
-            padding-top: 15px;\
-            padding-bottom: 15px;\
-            border-radius: 25px;\
-            margin: 20px;\
-      	}\
-      	.connected-devices-table {\
+        }\
+        .connected-devices-table {\
             padding-left: 30px;\
-            background-color: #191919;\
-            padding: 20px;\
-            border-radius: 10px 10px 25px 25px;\
-            margin: 20px;\
-      	}\
-        table {\
-            width: 100%;\
-            border-collapse:separate;\
-            border:solid gray 1px;\
-            border-radius:0px 0px 25px 25px;\
-            -moz-border-radius:25px;\
-            font-size: 20px;\
-        }\
-        td, th {\
-            border-left:solid grey 1px;\
-            border-top:solid grey 1px;\
-            padding: 15px;\
-        }\
-        th {\
-            background-color: rgb(92, 92, 92);\
-            border-top: none;\
-        }\
-        th.ip_address {\
-            border-radius: 22px;\
-        }\
-        th.mac_address {\
-            border-radius: 0px 22px 0px 0px;\
-        }\
-        td:first-child, th:first-child {\
-            border-left: none;\
         }\
         .routing-table {\
-        	background-color: #242424;\
+            background-color: #242424;\
             border-radius: 25px;\
-            padding: 2px;\
-            margin: 20px;\
-        }\
-        .routing-table-title {\
-            padding-left: 30px;\
-            font-size: 30px;\
-            background-color: #141414;\
-            padding-top: 15px;\
-            padding-bottom: 15px;\
-            border-radius: 25px;\
-            margin: 20px;\
-        }\
-        .routing-table-table {\
-            padding-left: 30px;\
-            background-color: #191919;\
-            padding: 20px;\
-            border-radius: 25px;\
-            margin: 20px;\
+            margin-top: 20px;\
+            padding-top: 20px;\
+            padding-bottom: 10px;\
         }\
         .network-traffic {\
-        	background-color: #242424;\
+            background-color: #242424;\
             border-radius: 25px;\
-            padding: 2px;\
-            margin: 20px;\
+            margin-top: 20px;\
+            padding-top: 20px;\
+            padding-bottom: 10px;\
         }\
-        .network-traffic-title {\
-            padding-left: 30px;\
-            font-size: 30px;\
-            background-color: #141414;\
-            padding-top: 15px;\
-            padding-bottom: 15px;\
-            border-radius: 25px;\
-            margin: 20px;\
+        table {\
+          text-align: left;\
+          border: 2px solid gray;\
+          border-collapse: collapse;\
         }\
-        .network-traffic-contents {\
-            background-color: #191919;\
-            padding: 20px;\
-            border-radius: 25px;\
-            margin: 20px;\
-            font-size: 20px;\
+        th {\
+          background-color:gray;\
+          color:white;\
+          padding: 15px;\
+          border-color: gray;\
+        }\
+        td {\
+          color: white;\
+          padding: 15px;\
         }\
     </style></html>'

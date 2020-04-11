@@ -76,6 +76,7 @@ class App extends React.Component {
           goToWebview: false,
           ctype: '',
           decryptedText: '',
+          userAdded: 0,
 
       }
   }
@@ -115,7 +116,7 @@ class App extends React.Component {
             console.log('Key:', key)
             this.encrypt(this.state.text, key)
                 .then(({ cipher, iv }) => {
-                    console.log('Encrypted:', cipher)
+                    console.log('iv from encrypt fn.', iv)
                     var myText = iv + ' ~ '+ cipher
                     this.setState({text: myText})
 
@@ -144,6 +145,7 @@ class App extends React.Component {
           alertMessage: 'Scan to Continue'
         });
 
+        console.log('text before enc:', this.state.text)
         this.encryptFunction()
         let ndef = await NfcManager.getNdefMessage();
         let bytes = buildTextPayload(this.state.text);
@@ -358,7 +360,6 @@ class App extends React.Component {
   addUser = () => {
     var nu = this.state.newUser
     var np = this.state.newPass
-    console.log('np', np)
 
     // Parse header that contains NFC security protocols
     var hdr = this.state.header
@@ -396,7 +397,7 @@ class App extends React.Component {
 
       var newContent = newHeader.concat(this.state.htmlCode)
 
-      this.setState({text: newContent, allowToAdd:1, modalVisible:false})
+      this.setState({text: newContent, allowToAdd:1, modalVisible:false, userAdded:1})
       this.writeData()
     }
 
@@ -434,9 +435,11 @@ class App extends React.Component {
     var outs = ''
     var cd = ''
     var temp = ''
+    var cd1 = ''
+    var temp1 = ''
     for (z = 0; z < out_array.length; z ++){
       outs = this.listToString(out_array[z])
-
+      console.log('outs', outs)
       //create a table if the output is for connected devices
       if (outs[0] === '#')  {
         cd = outs.replace(/<br\/>/g,"\t")
@@ -454,14 +457,39 @@ class App extends React.Component {
             temp = temp + '<th>' + cd[2] + '</th>'
           }
           else{
-            temp = temp + '<td>' + cd[0+(3*r)] + '</th>'
-            temp = temp + '<td>' + cd[1+(3*r)] + '</th>'
-            temp = temp + '<td>' + cd[2+(3*r)] + '</th>'
+            temp = temp + '<td>' + cd[0+(3*r)] + '</td>'
+            temp = temp + '<td>' + cd[1+(3*r)] + '</td>'
+            temp = temp + '<td>' + cd[2+(3*r)] + '</td>'
           }
           temp = temp + '</tr>'
         }
         outs = temp
+      }
 
+      else if (outs.search('default') != -1)  {
+        //Table for Routing table
+        cd1 = outs.replace(/<br\/>/g," ")
+        cd1 = cd1.split(' ')
+        cd1 = cd1.filter(item => item);
+
+        var cdlength = cd1.length
+        var rows = cdlength/7
+        temp1 = temp1 + '<tr><th>Destination IP</th><th>Interface</th><th>Source IP</th></tr>'
+        for(r=0; r<rows; r++) {
+          temp1 = temp1 + '<tr>'
+          if (r==0){
+            temp1 = temp1 + '<td>' + '0.0.0.0' + '</td>'
+            temp1 = temp1 + '<td>' + cd1[4] + '</td>'
+            temp1 = temp1 + '<td>' + cd1[6] + '</td>'
+          }
+          else{
+            temp1 = temp1 + '<td>' + cd1[0+(7*r)] + '</td>'
+            temp1 = temp1 + '<td>' + cd1[2+(7*r)] + '</td>'
+            temp1 = temp1 + '<td>' + cd1[6+(7*r)] + '</td>'
+          }
+          temp1 = temp1 + '</tr>'
+        }
+        outs = temp1
       }
 
       i = updated.indexOf('$')
@@ -485,7 +513,10 @@ class App extends React.Component {
 
   scanToWebview = () => {
     this.setState({goToWebview: true})
-    this.writeData();
+    if(this.state.userAdded == 1){
+      this.setState({allow: 1})
+    }
+    else{this.writeData();}
   }
 
 
@@ -546,7 +577,7 @@ class App extends React.Component {
               <TouchableOpacity
                   style={styles.buttonScan}
                   onPress={this.scanToWebview}>
-                  <Text style={styles.buttonText}>SCAN</Text>
+                  <Text style={styles.buttonText}>CONTINUE</Text>
               </TouchableOpacity>
 
 
@@ -652,6 +683,7 @@ class App extends React.Component {
           }
 
           return (
+            <View style={{backgroundColor:'black', flex:1}}>
               <WebView
                 style = {styles.thing}
                 source={{html: this.state.updated}}
@@ -659,6 +691,7 @@ class App extends React.Component {
                   this.changeSandP(config, event.nativeEvent.data);
                 }}
               />
+            </View>
           )
         }
 

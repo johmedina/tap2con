@@ -57,7 +57,6 @@ export var routerCommand = 'Name: OpenWRT Router\
             background-color:rgb(12, 12, 12);\
             opacity: 1;\
             animation: fade 2s linear;\
-            margin-top: 100px;\
         }\
         @keyframes fade {\
             0% {opacity:0}\
@@ -176,14 +175,14 @@ export var routerCommand = 'Name: OpenWRT Router\
             padding-left: 30px;\
             background-color: #191919;\
             padding: 20px;\
-            border-radius: 10px 10px 25px 25px;\
+            border-radius: 25px;\
             margin: 20px;\
       	}\
         table {\
             width: 100%;\
             border-collapse:separate;\
             border:solid gray 1px;\
-            border-radius:0px 0px 25px 25px;\
+            border-radius:25px;\
             -moz-border-radius:25px;\
             font-size: 20px;\
         }\
@@ -197,7 +196,7 @@ export var routerCommand = 'Name: OpenWRT Router\
             border-top: none;\
         }\
         th.ip_address {\
-            border-radius: 22px;\
+            border-radius: 22px 0px 0px;\
         }\
         th.mac_address {\
             border-radius: 0px 22px 0px 0px;\
