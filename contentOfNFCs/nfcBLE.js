@@ -1,4 +1,4 @@
-export var routerCommand = 'Name: OpenWRT Router\
+export var routerCommand = 'Name: Earphones\
   Connectivity:BLE num_of_devices_paired:0 devices_paired_id:None dp_pass:None<html>\
   <body>\
     <h1 class=\'title\'> EARPHONES CONNECTION VIA BLUETOOTH </h1>\

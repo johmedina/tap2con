@@ -1,4 +1,4 @@
-export var routerCommand = 'Name: OpenWRT Router\
+export var routerCommand = 'Name: TV\
   Connectivity:WFI num_of_devices_paired:0 devices_paired_id:None dp_pass:None<html>\
   <body>\
     <h1 class=\'title\'> TV CONNECTION VIA WIFI </h1>\

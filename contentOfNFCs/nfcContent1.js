@@ -12,7 +12,7 @@ export var routerCommand = 'Name: OpenWRT Router\
                 window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].ssid=\'\"+ getNewSSID() +\"\' \\nuci commit wireless\");}\
             }\
             function myFunction2 (){\
-                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].ssid=\'\"+ getNewSSID() +\"\' \\nuci commit wireless\");}\
+                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].key=\'\"+ getNewPass() +\"\' \\nuci commit wireless\");}\
         </script>\
         <div class=\'change-ssid\'>\
             <div class=\'ssid\'>\

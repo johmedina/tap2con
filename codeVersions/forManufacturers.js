@@ -17,7 +17,7 @@ import {
 import NfcManager, {Ndef, NfcTech, NfcEvents} from 'react-native-nfc-manager';
 import HTML from 'react-native-render-html';
 import { WebView } from 'react-native-webview';
-import {routerCommand} from './nfcContent';
+import {routerCommand} from './contentOfNFCs/nfcContent';
 
 function buildTextPayload(valueToWrite) {
     return Ndef.encodeMessage([

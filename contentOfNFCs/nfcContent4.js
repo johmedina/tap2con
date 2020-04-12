@@ -3,16 +3,21 @@ export var routerCommand = 'Name: OpenWRT Router\
     <body> <h1 class=\'title\'> OpenWRT Router </h1>\
         <script>\
             function getNewSSID() {\
-            return document.getElementById(\'newssid\').value;\}\
+              return document.getElementById(\'newssid\').value;}\
             function getNewPass() {\
-            return document.getElementById(\'newpass\').value;\}\
-            function myFunction (){\
+              return document.getElementById(\'newpass\').value;}\
+            function changeSSID (){\
             if (getNewSSID() != \'\'){\
                 document.getElementById(\'ssid\').innerHTML = getNewSSID();\
-                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].ssid=\'\"+ getNewSSID() +\"\' \nuci commit wireless\");\}\
+                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].ssid=\'\"+ getNewSSID() +\"\' \\nuci commit wireless\");\
+                window.ReactNativeWebView.postMessage("reboot");\
+                alert(\"The router is restarting for your changes to take effect. Please reconnect to the router in your phone WiFi settings\");}\
             }\
-            function myFunction2 (){\
-                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].key=\'\"+ getNewPass() +\"\' \nuci commit wireless\");\}\
+            function changePass (){\
+                if (getNewPass() != \'\'){\
+                window.ReactNativeWebView.postMessage(\"uci set wireless.@wifi-iface[0].key=\'\"+ getNewPass() +\"\' \\nuci commit wireless\");\
+                window.ReactNativeWebView.postMessage("reboot");\
+                alert(\"The router is restarting for your changes to take effect. Please reconnect to the router in your phone WiFi settings\");}}\
         </script>\
         <div class=\'change-ssid\'>\
             <div class=\'ssid\'>\
@@ -24,12 +29,12 @@ export var routerCommand = 'Name: OpenWRT Router\
                 <form>\
                     <label id=\'id1\' for=\'newssid\'>SSID: </label>\
                     <input id=\'newssid\' type=\'text\' placeholder=\'Enter new SSID here\'>\
-                    <input type=\'button\' value=\'Apply\' onclick=\'myFunction()\'>\
+                    <input type=\'button\' value=\'Apply\' onclick=\'changeSSID()\'>\
                 </form>\
                 <form>\
                     <label id=\'id2\' form=\'newpass\'>Password: </label>\
                     <input id=\'newpass\' type=\'password\' placeholder=\'Enter new password here\'>\
-                    <input type=\'button\' value=\'Apply\' onclick=\'myFunction2()\'>\
+                    <input type=\'button\' value=\'Apply\' onclick=\'changePass()\'>\
                 </form>\
             </div>\
         </div>\
@@ -57,7 +62,6 @@ export var routerCommand = 'Name: OpenWRT Router\
             background-color:rgb(12, 12, 12);\
             opacity: 1;\
             animation: fade 2s linear;\
-            margin-top: 100px;\
         }\
         @keyframes fade {\
             0% {opacity:0}\
@@ -73,6 +77,7 @@ export var routerCommand = 'Name: OpenWRT Router\
             padding-top: 50px;\
             padding-bottom: 50px;\
             color:white;\
+            margin-top:100px;\
         }\
         h1.headers {\
             display:inline;\
@@ -176,14 +181,14 @@ export var routerCommand = 'Name: OpenWRT Router\
             padding-left: 30px;\
             background-color: #191919;\
             padding: 20px;\
-            border-radius: 10px 10px 25px 25px;\
+            border-radius: 25px;\
             margin: 20px;\
       	}\
         table {\
             width: 100%;\
             border-collapse:separate;\
             border:solid gray 1px;\
-            border-radius:0px 0px 25px 25px;\
+            border-radius:25px;\
             -moz-border-radius:25px;\
             font-size: 20px;\
         }\
@@ -197,7 +202,7 @@ export var routerCommand = 'Name: OpenWRT Router\
             border-top: none;\
         }\
         th.ip_address {\
-            border-radius: 22px;\
+            border-radius: 22px 0px 0px;\
         }\
         th.mac_address {\
             border-radius: 0px 22px 0px 0px;\

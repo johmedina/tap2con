@@ -27,6 +27,7 @@
  *  goToWebview   ||    flag for allowing access to Webview
  *  ctype         ||    connectivity type read from the NFC tag
  *  decryptedText ||    decrypted text
+ *  userAdded     ||    flag to check if admin just added a user
  *  */
 
 
@@ -113,10 +114,9 @@ class App extends React.Component {
     encryptFunction() {
       try {
         this.generateKey('dcnfjlkbd298SKDH', 'DCJKN278hdsb', 5000, 256).then(key => {
-            console.log('Key:', key)
             this.encrypt(this.state.text, key)
                 .then(({ cipher, iv }) => {
-                    console.log('iv from encrypt fn.', iv)
+                    console.log('IV from writing with encryption:', iv)
                     var myText = iv + ' ~ '+ cipher
                     this.setState({text: myText})
 
@@ -145,11 +145,11 @@ class App extends React.Component {
           alertMessage: 'Scan to Continue'
         });
 
-        console.log('text before enc:', this.state.text)
+        console.log('Header to write before encryption:', this.state.header)
         this.encryptFunction()
         let ndef = await NfcManager.getNdefMessage();
         let bytes = buildTextPayload(this.state.text);
-        console.log('writing log: ', this.state.text)
+        console.log('Writing log: ', this.state.text)
         await NfcManager.writeNdefMessage(bytes);
         await NfcManager.setAlertMessageIOS('Accessing Device...');
 
@@ -179,7 +179,7 @@ class App extends React.Component {
       try {
           var text = await this.decrypt({ cipher, iv }, key)
           this.setState({decryptedText:text})
-          console.log('decText:', this.state.decryptedText)
+          console.log('Decrypted text:', this.state.decryptedText)
 
           var h = text.indexOf('<html>');
 
@@ -197,7 +197,7 @@ class App extends React.Component {
           //Connectivity choices: SSH, BLE, WFI
           var type = hd.substring(c+13, c+16)
           this.setState({ctype: type})
-          console.log(this.state.ctype)
+          console.log('Connection type:',this.state.ctype)
 
       }
       catch (e) {
@@ -234,6 +234,7 @@ class App extends React.Component {
 
     // Decrypt the NFC data
     var content = this.state.parsed[0];
+    console.log('Content from read:', content)
     var endOfIV = content.indexOf(' ~ ')
     var iv = content.substring(0,endOfIV).trim()
     var cipher = content.substring(endOfIV+3)
@@ -276,7 +277,7 @@ class App extends React.Component {
 
     var idArray = devId.split(',')
     var passArray = devIdPass.split(',')
-    console.log(idArray, passArray)
+    console.log('Username array:', idArray, 'Password Array:', passArray)
 
     numOfDevP = idArray.length;
     var adminUser = idArray[0].trim()
@@ -293,19 +294,18 @@ class App extends React.Component {
 
       var newDevIdPass = this.state.hashed
       newDevIdPass = newDevIdPass.concat(' ')
-      //console.log('newDevPass:', newDevIdPass)
 
       //write these back to the nfc tag
       var newHeader = hdr.replace(numOfDevP, newNumOfDevP)
       newHeader = newHeader.replace(devId, newDevId)
       newHeader = newHeader.replace(devIdPass, newDevIdPass)
-      //console.log('newHeader: ', newHeader)
 
       var newContent = newHeader.concat(this.state.htmlCode)
 
       this.setState({
         continue: 1,
         text: newContent,
+        header: newHeader
       })
     }
 
@@ -321,8 +321,6 @@ class App extends React.Component {
     else {
       var okUser = false;
       for(let i=0; i<numOfDevP; i++){
-        console.log('hashed:', this.state.hashed)
-        console.log('passArray:', passArray[i])
         if((uname === idArray[i].trim()) && (this.state.hashed === passArray[i].trim())){
           okUser = true;
         }
@@ -397,7 +395,7 @@ class App extends React.Component {
 
       var newContent = newHeader.concat(this.state.htmlCode)
 
-      this.setState({text: newContent, allowToAdd:1, modalVisible:false, userAdded:1})
+      this.setState({text: newContent, allowToAdd:1, modalVisible:false, userAdded:1, header:newHeader,})
       this.writeData()
     }
 
@@ -413,13 +411,10 @@ class App extends React.Component {
   doPassword = (pw) => {
     var pss = pw.trim()
     this.setState({password: pss})
-    //console.log('input password:', pss)
     //hash the password
     JSHash(pss, CONSTANTS.HashAlgorithms.keccak)
       .then(hash => this.setState({hashed: hash}))
       .catch(e => console.log(e));
-
-    //console.log(this.state.hashed)
   }
 
   doPasswordNew = (pw) => {
@@ -439,7 +434,6 @@ class App extends React.Component {
     var temp1 = ''
     for (z = 0; z < out_array.length; z ++){
       outs = this.listToString(out_array[z])
-      console.log('outs', outs)
       //create a table if the output is for connected devices
       if (outs[0] === '#')  {
         cd = outs.replace(/<br\/>/g,"\t")
@@ -506,7 +500,7 @@ class App extends React.Component {
   changeSandP(config, cmd){
     SSH.execute(config,cmd).then(
       result => {
-        console.log(result)
+        console.log('Changed SSID/password', result)
       }
     )
   }
@@ -656,7 +650,6 @@ class App extends React.Component {
           var hst = hd.substring(hs+5, p-1)
           var pass = hd.substring(p+9, k-1)
           var config ={user: usr ,host: hst, password: pass}
-          console.log(config)
 
           var out_array = []
           var command_array = []
@@ -832,11 +825,12 @@ const styles = StyleSheet.create({
     signButton: {
       backgroundColor: 'white',
       borderWidth: 2,
-      width: 140,
-      height: 25,
+      width: 180,
+      height: 40,
       justifyContent: 'center',
       marginTop: 30,
-      marginLeft: 136,
+      marginLeft: 112,
+      borderRadius: 20,
     },
 
     addusers: {
@@ -847,7 +841,8 @@ const styles = StyleSheet.create({
 
     overlay: {
       height: '20%',
-      marginTop: 200,
+      marginTop: 210,
+      borderRadius: 15,
 
     },
 
