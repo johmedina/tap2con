@@ -1,4 +1,4 @@
-# tap2con
+# Tap2con
 # Leveraging Near Field Communication and Cross-Platform Mobile Applications to Simplify the Configuration of Internet of Things Devices and Services
 
 ## Abstract
